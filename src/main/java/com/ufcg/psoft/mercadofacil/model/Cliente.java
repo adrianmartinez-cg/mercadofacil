@@ -93,4 +93,13 @@ public class Cliente {
 	public List<Compra> getHistoricoCompras(){
 		return this.historicoCompras;
 	}
+	
+	public boolean temCompra(Long idCompra) {
+		for(Compra compra : historicoCompras) {
+			if(compra.getId().equals(idCompra)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

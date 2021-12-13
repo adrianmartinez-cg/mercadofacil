@@ -21,5 +21,7 @@ public interface ClienteService {
 	public Cliente criaCliente(ClienteDTO clienteDTO);
 	
 	public Cliente atualizaCliente(ClienteDTO clienteDTO, Cliente cliente);
+	
+	public boolean clienteTemCompra(Cliente cliente, Long idCompra);
 
 }

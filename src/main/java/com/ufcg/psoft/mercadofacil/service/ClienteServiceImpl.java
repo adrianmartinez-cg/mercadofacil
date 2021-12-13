@@ -49,4 +49,9 @@ public class ClienteServiceImpl implements ClienteService {
 		
 		return cliente;
 	}
+
+	@Override
+	public boolean clienteTemCompra(Cliente cliente,Long idCompra) {
+		return cliente.temCompra(idCompra);
+	}
 }

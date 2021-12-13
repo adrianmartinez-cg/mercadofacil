@@ -29,7 +29,7 @@ public class CompraApiController {
 	@Autowired
 	private ClienteService clienteService;
 	
-	@RequestMapping(value = "/cliente/{idCliente}/compra", method = RequestMethod.GET)
+	@RequestMapping(value = "/cliente/{idCliente}/compra", method = RequestMethod.POST)
 	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente){
 		Optional<Cliente> clienteOp = clienteService.getClienteById(idCliente);
 		if (!clienteOp.isPresent()) {
@@ -40,6 +40,22 @@ public class CompraApiController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Compra>(compra,HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/cliente/{idCliente}/compra/", method = RequestMethod.GET)
+	public ResponseEntity<?> consultarCompra(@PathVariable ("idCliente") long idCliente, long idCompra){
+		Optional<Cliente> clienteOp = clienteService.getClienteById(idCliente);
+		if (!clienteOp.isPresent()) {
+			return ErroCliente.erroClienteNaoEncontrado(idCliente);
+		}
+		Optional<Compra> compra = compraService.getCompra(idCompra);
+		if(!compra.isPresent()) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if(!clienteService.clienteTemCompra(clienteOp.get(), idCompra)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Compra>(compra.get(),HttpStatus.OK);
 	}
 
 }

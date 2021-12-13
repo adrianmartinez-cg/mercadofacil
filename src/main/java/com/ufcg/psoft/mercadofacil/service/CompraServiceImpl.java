@@ -1,5 +1,7 @@
 package com.ufcg.psoft.mercadofacil.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,11 @@ public class CompraServiceImpl implements CompraService{
 			return compra;
 		}
 		return null;
+	}
+
+	@Override
+	public Optional<Compra> getCompra(Long idCompra) {
+		return compraRepository.findById(idCompra);
 	}
 	
 }
