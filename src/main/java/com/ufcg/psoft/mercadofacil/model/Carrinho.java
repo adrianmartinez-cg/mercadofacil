@@ -71,5 +71,17 @@ public class Carrinho {
 		}
 		return false;
 	}		
+	
+	public double getValor() {
+		double valorTotal = 0;
+		for(ProdutoConjunto conjunto : produtos) {
+			valorTotal += conjunto.getValor();
+		}
+		return valorTotal;
+	}
+	
+	public boolean temAlgumProduto() {
+		return !produtos.isEmpty();
+	}
 }
 

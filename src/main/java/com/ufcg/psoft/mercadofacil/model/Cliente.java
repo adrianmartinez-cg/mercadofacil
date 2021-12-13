@@ -1,10 +1,14 @@
 package com.ufcg.psoft.mercadofacil.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,9 @@ public class Cliente {
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Carrinho carrinho;
+	
+	@OneToMany(cascade = CascadeType.PERSIST)
+	private List<Compra> historicoCompras;
 
 	private Cliente() {}
 
@@ -35,6 +42,7 @@ public class Cliente {
 		this.idade = idade;
 		this.endereco = endereco;
 		this.carrinho = new Carrinho();
+		this.historicoCompras = new ArrayList<Compra>();
 	}
 
 	public Long getId() {
@@ -76,5 +84,9 @@ public class Cliente {
 	}
 	public int removerProdutoCarrinho(Produto produto, int quantidade) {
 		return this.carrinho.removerProduto(produto,quantidade);
+	}
+	
+	public void adicionarCompra(Compra compra) {
+		this.historicoCompras.add(compra);
 	}
 }

@@ -58,10 +58,10 @@ public class CarrinhoApiController {
 		}
 		
 		Lote lote = carrinhoService.adicionarProduto(clienteOp.get(), produtoOp.get(),quantidade);
-		if(lote.getNumeroDeItens() >= 0) {
+		if(lote.getNumeroDeItens() >= 0) { // produtos adicionados ao carrinho com sucesso
 			loteService.salvarLote(lote);
-			return new ResponseEntity<Lote>(lote,HttpStatus.OK);
-		}
+			return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.OK);
+		} // nao foi possivel adicionar produtos ( mais produtos do que tinha no lote)
 		lote.setNumeroDeItens(lote.getNumeroDeItens() + quantidade);
 		loteService.salvarLote(lote);
 		return new ResponseEntity<Lote>(lote,HttpStatus.BAD_REQUEST);
@@ -81,12 +81,12 @@ public class CarrinhoApiController {
 			return ErroProduto.erroProdutoNaoEncontrado(idProduto);
 		}
 		if(!clienteOp.get().getCarrinho().temProduto(idProduto)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.BAD_REQUEST);
 		}
 		
 		Lote lote = carrinhoService.removerProduto(clienteOp.get(), produtoOp.get(),quantidade);
 		loteService.salvarLote(lote);
-		return new ResponseEntity<Lote>(lote,HttpStatus.OK);
+		return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/cliente/{idCliente}/carrinho/", method = RequestMethod.GET)

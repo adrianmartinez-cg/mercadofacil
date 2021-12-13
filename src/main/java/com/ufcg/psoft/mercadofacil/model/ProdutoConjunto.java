@@ -16,8 +16,9 @@ public class ProdutoConjunto {
 	
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Produto produto;
-	
+
 	private int quantidade;
+	
 	public ProdutoConjunto() {
 		
 	}
@@ -61,6 +62,10 @@ public class ProdutoConjunto {
 	
 	public boolean estaVazio() {
 		return this.quantidade == 0;
+	}
+	
+	public double getValor() {
+		return produto.getPreco().doubleValue()*quantidade;
 	}
 	
 	
