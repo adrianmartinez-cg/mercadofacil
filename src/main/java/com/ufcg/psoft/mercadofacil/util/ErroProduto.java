@@ -8,22 +8,22 @@ import com.ufcg.psoft.mercadofacil.model.Produto;
 
 public class ErroProduto {
 	
-	static final String PRODUTO_NAO_CASTRADO = "Produto com id %s não está cadastrado";
+	static final String PRODUTO_NAO_CADASTRADO = "Produto com id %s não está cadastrado";
 	
-	static final String PRODUTOS_NAO_CASTRADOS = "Não há produtos cadastrados";
+	static final String PRODUTOS_NAO_CADASTRADOS = "Não há produtos cadastrados";
 
 	static final String NAO_FOI_POSSIVEL_ATUALIZAR = "Não foi possível mudar atualizar a situação do produto %s "
 			+ "do frabricante %s";
 
 	static final String PRODUTO_JA_CADASTRADO = "O produto %s do fabricante %s já esta cadastrado";
 
-	public static ResponseEntity<CustomErrorType> erroProdutoNaoEnconrtrado(long id) {
-		return new ResponseEntity<CustomErrorType>(new CustomErrorType(String.format(ErroProduto.PRODUTO_NAO_CASTRADO, id)),
+	public static ResponseEntity<CustomErrorType> erroProdutoNaoEncontrado(long id) {
+		return new ResponseEntity<CustomErrorType>(new CustomErrorType(String.format(ErroProduto.PRODUTO_NAO_CADASTRADO, id)),
 				HttpStatus.NOT_FOUND);
 	}
 	
 	public static ResponseEntity<CustomErrorType> erroSemProdutosCadastrados() {		
-		return new ResponseEntity<CustomErrorType>(new CustomErrorType(ErroProduto.PRODUTOS_NAO_CASTRADOS),
+		return new ResponseEntity<CustomErrorType>(new CustomErrorType(ErroProduto.PRODUTOS_NAO_CADASTRADOS),
 				HttpStatus.NO_CONTENT);
 	}
 
