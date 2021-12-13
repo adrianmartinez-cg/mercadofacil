@@ -83,5 +83,9 @@ public class Carrinho {
 	public boolean temAlgumProduto() {
 		return !produtos.isEmpty();
 	}
+	
+	public Long getId() {
+		return this.id;
+	}
 }
 

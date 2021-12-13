@@ -89,4 +89,8 @@ public class Cliente {
 	public void adicionarCompra(Compra compra) {
 		this.historicoCompras.add(compra);
 	}
+	
+	public List<Compra> getHistoricoCompras(){
+		return this.historicoCompras;
+	}
 }
