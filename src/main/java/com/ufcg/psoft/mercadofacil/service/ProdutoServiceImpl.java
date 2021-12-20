@@ -37,7 +37,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	public Produto criaProduto(ProdutoDTO produtoDTO) {
-		Produto produto = new Produto(produtoDTO.getNome(), produtoDTO.getFabricante(), produtoDTO.getCodigoBarra(),
+		Produto produto = new Produto(produtoDTO.getNome(), produtoDTO.getCodigoBarra(), produtoDTO.getFabricante(),
 				produtoDTO.getPreco(), produtoDTO.getCategoria());
 		
 		produto.tornaDisponivel();

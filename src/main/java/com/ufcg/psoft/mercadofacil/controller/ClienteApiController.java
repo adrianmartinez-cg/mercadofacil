@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.ufcg.psoft.mercadofacil.DTO.ClienteDTO;
+import com.ufcg.psoft.mercadofacil.model.Carrinho;
 import com.ufcg.psoft.mercadofacil.model.Cliente;
 import com.ufcg.psoft.mercadofacil.service.ClienteService;
 import com.ufcg.psoft.mercadofacil.util.ErroCliente;
@@ -49,6 +50,7 @@ public class ClienteApiController {
 		}
 
 		Cliente cliente = clienteService.criaCliente(clienteDTO);
+		
 		clienteService.salvarClienteCadastrado(cliente);
 
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
@@ -60,7 +62,7 @@ public class ClienteApiController {
 		Optional<Cliente> clienteOp = clienteService.getClienteById(id);
 	
 		if (!clienteOp.isPresent()) {
-			return ErroCliente.erroClienteNaoEnconrtrado(id);
+			return ErroCliente.erroClienteNaoEncontrado(id);
 		}
 		
 		return new ResponseEntity<Cliente>(clienteOp.get(), HttpStatus.OK);
@@ -72,7 +74,7 @@ public class ClienteApiController {
 		Optional<Cliente> clienteOp = clienteService.getClienteById(id);
 		
 		if (!clienteOp.isPresent()) {
-			return ErroCliente.erroClienteNaoEnconrtrado(id);
+			return ErroCliente.erroClienteNaoEncontrado(id);
 		}
 		
 		Cliente cliente = clienteOp.get();
@@ -89,7 +91,7 @@ public class ClienteApiController {
 		Optional<Cliente> clienteOp = clienteService.getClienteById(id);
 		
 		if (!clienteOp.isPresent()) {
-			return ErroCliente.erroClienteNaoEnconrtrado(id);
+			return ErroCliente.erroClienteNaoEncontrado(id);
 		}
 				
 		clienteService.removerClienteCadastrado(clienteOp.get());

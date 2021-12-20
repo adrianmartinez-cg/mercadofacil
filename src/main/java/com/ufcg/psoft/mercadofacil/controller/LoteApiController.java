@@ -49,7 +49,7 @@ public class LoteApiController {
 		Optional<Produto> optionalProduto = produtoService.getProdutoById(id);
 		
 		if (!optionalProduto.isPresent()) {
-			return ErroProduto.erroProdutoNaoEnconrtrado(id);
+			return ErroProduto.erroProdutoNaoEncontrado(id);
 		}
 		
 		Produto produto = optionalProduto.get();

@@ -1,6 +1,7 @@
 package com.ufcg.psoft.mercadofacil.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,4 +28,21 @@ public class LoteServiceImpl implements LoteService {
 		Lote lote = new Lote(produto, numItens);
 		return lote;
 	}
+
+	@Override
+	public Optional<Lote> getLoteById(Long idLote) {
+		return loteRepository.findById(idLote);
+	}
+	
+	public Lote getLoteByProdutoId(Long idProduto) {
+		List<Lote> lotes = listarLotes();
+		for(Lote lote : lotes) {
+			Produto produto = lote.getProduto();
+			if(produto.getId() == idProduto) {
+				return lote;
+			}
+		}
+		return null;
+	}
+	
 }

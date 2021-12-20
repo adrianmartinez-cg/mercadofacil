@@ -1,10 +1,13 @@
 package com.ufcg.psoft.mercadofacil.model;
 
 import java.math.BigDecimal;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.ufcg.psoft.mercadofacil.model.Produto;
 
@@ -28,7 +31,7 @@ public class Produto {
 	private boolean isDisponivel;
 
 	private Produto() {	}
-
+	
 	public Produto(String nome, String codigoBarra, String fabricante,
 			BigDecimal preco, String nomeCategoria) {
 		
@@ -126,4 +129,5 @@ public class Produto {
 	public String toString() {
 		return this.id + " " + this.nome;
 	}
+
 }
