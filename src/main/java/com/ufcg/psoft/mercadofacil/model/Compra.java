@@ -22,7 +22,9 @@ public class Compra {
 	private LocalDate data;
 	
 	private double valor;
-
+	
+	private FormaPagamento formaPagamento;
+	
 	public Compra() {}
 	public Compra(Carrinho carrinho, double valor) {
 		this.carrinho = carrinho;
@@ -56,5 +58,20 @@ public class Compra {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
+	public FormaPagamento getFormaPagamento() {
+		return formaPagamento;
+	}
+	public void setFormaPagamento(FormaPagamento formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
 	
+	public void setFormaPagamento(String formaPagamento) {
+		if(formaPagamento.equals("BOLETO")) {
+			setFormaPagamento(FormaPagamento.BOLETO);
+		} else if (formaPagamento.equals("PAYPAL")) {
+			setFormaPagamento(FormaPagamento.PAYPAL);
+		} else if (formaPagamento.equals("CARTAO_DE_CREDITO")) {
+			setFormaPagamento(FormaPagamento.CARTAO_DE_CREDITO);
+		}
+	}
 }

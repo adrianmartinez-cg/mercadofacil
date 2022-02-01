@@ -16,6 +16,9 @@ values(10005,'Creme Dental', '87654325-C', 'Colgate', FALSE, 'HIGIENE', 2.5);
 insert into lote (ID, PRODUTO_ID, NUMERO_DE_ITENS)
 values(1, 10005, 5);
 
+insert into lote (ID, PRODUTO_ID, NUMERO_DE_ITENS)
+values(2, 10001, 10);
+
 update produto set IS_DISPONIVEL = TRUE where ID = 10005;
 
 insert into cliente (ID, CPF, NOME, IDADE, ENDERECO)
