@@ -75,6 +75,16 @@ public class Compra {
 		this.valorComAcrescimo = valorComAcrescimo;
 	}
 	
+	public void calcularValorComAcrescimo() {
+		if(this.formaPagamento.equals(FormaPagamento.BOLETO)) {
+			setValorComAcrescimo(this.valor);
+		} else if (this.formaPagamento.equals(FormaPagamento.PAYPAL)) {
+			setValorComAcrescimo(this.valor*1.02);
+		} else if (this.formaPagamento.equals(FormaPagamento.CARTAO_DE_CREDITO)) {
+			setValorComAcrescimo(this.valor*1.05);
+		}
+	}
+	
 	public FormaPagamento getFormaPagamento() {
 		return formaPagamento;
 	}
@@ -83,21 +93,17 @@ public class Compra {
 	}
 	
 	public void setFormaPagamento(String formaPagamento) {
-		double acrescimoPaypal = 1.02;
-		double acrescimoCartao = 1.05;
 		if(formaPagamento.equals("BOLETO")) {
 			setFormaPagamento(FormaPagamento.BOLETO);
-			setValorComAcrescimo(this.valor);
 		} else if (formaPagamento.equals("PAYPAL")) {
 			setFormaPagamento(FormaPagamento.PAYPAL);
-			setValorComAcrescimo(this.valor * acrescimoPaypal);
 		} else if (formaPagamento.equals("CARTAO_DE_CREDITO")) {
 			setFormaPagamento(FormaPagamento.CARTAO_DE_CREDITO);
-			setValorComAcrescimo(this.valor * acrescimoCartao);
 		}
 	}
 	
-	public void setValorComDesconto(PerfilCliente perfilCliente) {
+	
+	public void calcularValorComDesconto(PerfilCliente perfilCliente) {
 		if(perfilCliente.equals(PerfilCliente.ESPECIAL) && this.carrinho.getQuantidadeProdutos() > 10) {
 			this.valorComDesconto = this.valorComAcrescimo * 0.90;
 		} else if (perfilCliente.equals(PerfilCliente.PREMIUM) && this.carrinho.getQuantidadeProdutos() > 5) {
