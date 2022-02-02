@@ -58,10 +58,11 @@ public class CarrinhoApiController {
 		}
 		
 		Lote lote = carrinhoService.adicionarProduto(clienteOp.get(), produtoOp.get(),quantidade);
-		if(lote.getNumeroDeItens() >= 0) { // produtos adicionados ao carrinho com sucesso
+		if(lote.getNumeroDeItens() >= 0) { 			
 			loteService.salvarLote(lote);
 			return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.OK);
-		} // nao foi possivel adicionar produtos ( mais produtos do que tinha no lote)
+		}
+		// tentou adicionar mais produtos do que havia no lote
 		lote.setNumeroDeItens(lote.getNumeroDeItens() + quantidade);
 		loteService.salvarLote(lote);
 		return new ResponseEntity<Lote>(lote,HttpStatus.BAD_REQUEST);

@@ -30,72 +30,52 @@ public class ClienteApiController {
 	
 	@RequestMapping(value = "/clientes", method = RequestMethod.GET)
 	public ResponseEntity<?> listarClientes() {
-		
 		List<Cliente> clientes = clienteService.listarClientes();
-		
 		if (clientes.isEmpty()) {
 			return ErroCliente.erroSemClientesCadastrados();
 		}
-		
 		return new ResponseEntity<List<Cliente>>(clientes, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/cliente/", method = RequestMethod.POST)
 	public ResponseEntity<?> criarCliente(@RequestBody ClienteDTO clienteDTO, UriComponentsBuilder ucBuilder) {
-
 		Optional<Cliente> clienteOp = clienteService.getClienteByCPF(clienteDTO.getCPF());
-		
 		if (!clienteOp.isEmpty()) {
 			return ErroCliente.erroClienteJaCadastrado(clienteDTO);
 		}
-
-		Cliente cliente = clienteService.criaCliente(clienteDTO);
-		
+		Cliente cliente = clienteService.criaCliente(clienteDTO);		
 		clienteService.salvarClienteCadastrado(cliente);
-
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
 	}
 
 	@RequestMapping(value = "/cliente/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> consultarCliente(@PathVariable("id") long id) {
-
 		Optional<Cliente> clienteOp = clienteService.getClienteById(id);
-	
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(id);
 		}
-		
 		return new ResponseEntity<Cliente>(clienteOp.get(), HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/cliente/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<?> atualizarCliente(@PathVariable("id") long id, @RequestBody ClienteDTO clienteDTO) {
-
 		Optional<Cliente> clienteOp = clienteService.getClienteById(id);
-		
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(id);
 		}
-		
 		Cliente cliente = clienteOp.get();
-		
 		clienteService.atualizaCliente(clienteDTO, cliente);
 		clienteService.salvarClienteCadastrado(cliente);
-		
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/cliente/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> removerCliente(@PathVariable("id") long id) {
-
 		Optional<Cliente> clienteOp = clienteService.getClienteById(id);
-		
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(id);
 		}
-				
 		clienteService.removerClienteCadastrado(clienteOp.get());
-
 		return new ResponseEntity<Cliente>(HttpStatus.OK);
 	}
 }

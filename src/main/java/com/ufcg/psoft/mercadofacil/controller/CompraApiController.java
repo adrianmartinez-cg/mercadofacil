@@ -32,8 +32,7 @@ public class CompraApiController {
 	private ClienteService clienteService;
 	
 	@RequestMapping(value = "/cliente/{idCliente}/compra", method = RequestMethod.POST)
-	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente, 
-			@RequestBody String tipoPagamento){
+	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente, @RequestBody String tipoPagamento){
 		Optional<Cliente> clienteOp = clienteService.getClienteById(idCliente);
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(idCliente);
