@@ -87,5 +87,13 @@ public class Carrinho {
 	public Long getId() {
 		return this.id;
 	}
+	
+	public int getQuantidadeProdutos() {
+		int quant = 0;
+		for (ProdutoConjunto produto : this.produtos) {
+			quant += produto.getQuantidade();
+		}
+		return quant;
+	}
 }
 

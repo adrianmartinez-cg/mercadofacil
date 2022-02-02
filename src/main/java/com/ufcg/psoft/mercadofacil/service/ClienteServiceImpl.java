@@ -38,7 +38,7 @@ public class ClienteServiceImpl implements ClienteService {
 
 	public Cliente criaCliente(ClienteDTO clienteDTO) {
 		Cliente cliente = new Cliente(clienteDTO.getCPF(), clienteDTO.getNome(), 
-				clienteDTO.getIdade(), clienteDTO.getEndereco());
+				clienteDTO.getIdade(), clienteDTO.getEndereco(), clienteDTO.getPerfil());
 		
 		return cliente;
 	}

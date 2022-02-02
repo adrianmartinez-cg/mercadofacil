@@ -31,6 +31,7 @@ public class CompraServiceImpl implements CompraService{
 					                   cliente.getCarrinho().getValor());
 			compra.setFormaPagamento(formaPagamento);
 			if(compra.getFormaPagamento() != null) {
+				compra.setValorComDesconto(cliente.getPerfilCliente());
 				salvarCompra(compra);
 				cliente.adicionarCompra(compra);
 				cliente.setCarrinho(new Carrinho());
