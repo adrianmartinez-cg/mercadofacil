@@ -91,10 +91,6 @@ public class Produto {
 		this.isDisponivel = true;
 	}
 	
-	public void tornaIndisponivel() {
-		this.isDisponivel = false;
-	}
-	
 	public boolean isDisponivel() {
 		return this.isDisponivel;
 	}
