@@ -121,4 +121,16 @@ public class Cliente {
 			this.perfil = PerfilCliente.NORMAL;
 		}
 	}
+	
+	public boolean temProdutoNoCarrinho(Long idProduto) {
+		return this.carrinho.temProduto(idProduto);
+	}
+	
+	public boolean temAlgumProduto() {
+		return this.carrinho.temAlgumProduto();
+	}
+	
+	public double getValorCarrinho() {
+		return this.carrinho.getValor();
+	}
 }

@@ -37,7 +37,8 @@ public class CompraApiController {
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(idCliente);
 		}
-		Compra compra = compraService.fecharCompra(clienteOp.get(), tipoPagamento);
+		Cliente cliente = clienteOp.get();
+		Compra compra = compraService.fecharCompra(cliente, tipoPagamento);
 		if(compra == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}

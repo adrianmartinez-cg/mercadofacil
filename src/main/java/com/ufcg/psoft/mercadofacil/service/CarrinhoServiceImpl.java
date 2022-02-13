@@ -47,5 +47,5 @@ public class CarrinhoServiceImpl implements CarrinhoService{
 		lote.setNumeroDeItens(lote.getNumeroDeItens() + removidos);		
 		return lote;
 	}
-
+	
 }

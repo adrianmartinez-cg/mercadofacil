@@ -26,10 +26,10 @@ public class CompraServiceImpl implements CompraService{
 	}
 	
 	public Compra fecharCompra(Cliente cliente, String formaPagamento) {
-		if(cliente.getCarrinho().temAlgumProduto()) {
+		if(cliente.temAlgumProduto()) {
 			Compra compra = new Compra(cliente.getCarrinho(), 
-					                   cliente.getCarrinho().getValor());
-			compra.setFormaPagamento(formaPagamento);
+					                   cliente.getValorCarrinho());
+			compra.definirFormaPagamento(formaPagamento);
 			if(compra.getFormaPagamento() != null) {
 				compra.calcularValorComAcrescimo();
 				compra.calcularValorComDesconto(cliente.getPerfilCliente());
