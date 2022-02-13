@@ -58,7 +58,8 @@ public class CompraApiController {
 		if(!compra.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(!clienteService.clienteTemCompra(clienteOp.get(), idCompra)) {
+		Cliente cliente = clienteOp.get();
+		if(!clienteService.clienteTemCompra(cliente, idCompra)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Compra>(compra.get(),HttpStatus.OK);

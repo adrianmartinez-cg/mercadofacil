@@ -105,12 +105,20 @@ public class Compra {
 	}
 	
 	public void calcularValorComDesconto(PerfilCliente perfilCliente) {
-		if(perfilCliente.equals(PerfilCliente.ESPECIAL) && this.carrinho.getQuantidadeProdutos() > 10) {
+		if(condicaoDeDescontoPerfilEspecial(perfilCliente)) {
 			this.valorComDesconto = this.valorComAcrescimo * 0.90;
-		} else if (perfilCliente.equals(PerfilCliente.PREMIUM) && this.carrinho.getQuantidadeProdutos() > 5) {
+		} else if (condicaoDeDescontoPerfilPremium(perfilCliente)) {
 			this.valorComDesconto = this.valorComAcrescimo * 0.90;
 		} else {
 			this.valorComDesconto = this.valorComAcrescimo;
 		}
+	}
+	
+	private boolean condicaoDeDescontoPerfilEspecial(PerfilCliente perfilCliente) {
+		return perfilCliente.equals(PerfilCliente.ESPECIAL) && this.carrinho.getQuantidadeProdutos() > 10;
+	}
+	
+	private boolean condicaoDeDescontoPerfilPremium(PerfilCliente perfilCliente) {
+		return perfilCliente.equals(PerfilCliente.PREMIUM) && this.carrinho.getQuantidadeProdutos() > 5;
 	}
 }
