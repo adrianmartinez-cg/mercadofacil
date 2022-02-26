@@ -27,7 +27,12 @@ public class Compra {
 	
 	private double valorComDesconto;
 	
+	private double totalAPagar;
+	
 	private FormaPagamento formaPagamento;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private Entrega formaEntrega;
 	
 	public Compra() {}
 	public Compra(Carrinho carrinho, double valor) {
@@ -71,6 +76,12 @@ public class Compra {
 		return this.valorComDesconto;
 	}
 	
+	public double getTotalAPagar() {
+		return totalAPagar;
+	}
+	public void setTotalAPagar(double totalAPagar) {
+		this.totalAPagar = totalAPagar;
+	}
 	public void setValorComAcrescimo(double valorComAcrescimo) {
 		this.valorComAcrescimo = valorComAcrescimo;
 	}
@@ -92,6 +103,10 @@ public class Compra {
 	}
 	public void setFormaPagamento(FormaPagamento formaPagamento) {
 		this.formaPagamento = formaPagamento;
+	}
+	
+	public void setFormaEntrega(Entrega formaEntrega) {
+		this.formaEntrega = formaEntrega;
 	}
 	
 	public void definirFormaPagamento(String formaPagamento) {
@@ -120,5 +135,26 @@ public class Compra {
 	
 	private boolean condicaoDeDescontoPerfilPremium(PerfilCliente perfilCliente) {
 		return perfilCliente.equals(PerfilCliente.PREMIUM) && this.carrinho.getQuantidadeProdutos() > 5;
+	}
+	
+	public void definirFormaEntrega(String formaEntrega, String tipoProdutos, double valorCompra) {
+		if(formaEntrega.equals("RETIRADA")) {
+			this.formaEntrega = new EntregaRetirada(valorCompra);
+			this.formaEntrega.setTipoEntrega(formaEntrega);
+		} else if (formaEntrega.equals("PADRAO")) {
+			this.formaEntrega = new EntregaPadrao(tipoProdutos,valorCompra);
+			this.formaEntrega.setTipoEntrega(formaEntrega);
+		} else if (formaEntrega.equals("EXPRESS")) {
+			this.formaEntrega = new EntregaExpress(tipoProdutos,valorCompra);
+			this.formaEntrega.setTipoEntrega(formaEntrega);
+		}
+	}
+	
+	public void definirTotalAPagar() {
+		this.totalAPagar = this.formaEntrega.calculaValorEntrega();
+	}
+		
+	public Entrega getFormaEntrega() {
+		return this.formaEntrega;
 	}
 }

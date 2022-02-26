@@ -95,5 +95,32 @@ public class Carrinho {
 		}
 		return quant;
 	}
+	
+	private boolean temAlgumProdutoCategoriaFrios() {
+		for(ProdutoConjunto produto : this.produtos) {
+			if(produto.getProduto().getCategoria().equals("Frios")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean temAlgumProdutoCategoriaFragil() {
+		for(ProdutoConjunto produto : this.produtos) {
+			if(produto.getProduto().getCategoria().equals("Fragil")) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public String getTipoProdutos() {
+		if(temAlgumProdutoCategoriaFrios()) {
+			return "REFRIGERACAO";
+		} else if (temAlgumProdutoCategoriaFragil()) {
+			return "FRAGIL";
+		}
+		return "COMUM";
+	}
 }
 

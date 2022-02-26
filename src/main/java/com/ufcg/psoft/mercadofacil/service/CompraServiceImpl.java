@@ -25,14 +25,16 @@ public class CompraServiceImpl implements CompraService{
 		compraRepository.save(compra);
 	}
 	
-	public Compra fecharCompra(Cliente cliente, String formaPagamento) {
+	public Compra fecharCompra(Cliente cliente, String formaPagamento, String formaEntrega) {
 		if(cliente.temAlgumProduto()) {
 			Compra compra = new Compra(cliente.getCarrinho(), 
 					                   cliente.getValorCarrinho());
 			compra.definirFormaPagamento(formaPagamento);
-			if(compra.getFormaPagamento() != null) {
+			if(detalhesCompraValidos(compra,formaEntrega)) {
 				compra.calcularValorComAcrescimo();
 				compra.calcularValorComDesconto(cliente.getPerfilCliente());
+				compra.definirFormaEntrega(formaEntrega,getTipoProdutos(cliente.getCarrinho()),compra.getValorComDesconto());
+				compra.definirTotalAPagar();
 				salvarCompra(compra);
 				cliente.adicionarCompra(compra);
 				cliente.setCarrinho(new Carrinho());
@@ -46,6 +48,18 @@ public class CompraServiceImpl implements CompraService{
 	@Override
 	public Optional<Compra> getCompra(Long idCompra) {
 		return compraRepository.findById(idCompra);
+	}
+	
+	private String getTipoProdutos(Carrinho carrinho) {
+		return carrinho.getTipoProdutos();
+	}
+	
+	private boolean formaEntregaValida(String formaEntrega) {
+		return formaEntrega.equals("RETIRADA") || formaEntrega.equals("PADRAO") || formaEntrega.equals("EXPRESS");
+	}
+	
+	private boolean detalhesCompraValidos(Compra compra, String formaEntrega) {
+		return (compra.getFormaPagamento() != null) && formaEntregaValida(formaEntrega); 
 	}
 	
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufcg.psoft.mercadofacil.DTO.FinalizarCompraDTO;
 import com.ufcg.psoft.mercadofacil.model.Cliente;
 import com.ufcg.psoft.mercadofacil.model.Compra;
 import com.ufcg.psoft.mercadofacil.model.FormaPagamento;
@@ -32,17 +33,21 @@ public class CompraApiController {
 	private ClienteService clienteService;
 	
 	@RequestMapping(value = "/cliente/{idCliente}/compra", method = RequestMethod.POST)
-	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente, @RequestBody String tipoPagamento){
+	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente, @RequestBody FinalizarCompraDTO detalhesCompra){
+		
 		Optional<Cliente> clienteOp = clienteService.getClienteById(idCliente);
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(idCliente);
 		}
 		Cliente cliente = clienteOp.get();
-		Compra compra = compraService.fecharCompra(cliente, tipoPagamento);
+		Compra compra = compraService.fecharCompra(cliente, detalhesCompra.getFormaPagamento(), detalhesCompra.getFormaEntrega());
 		if(compra == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(compra.getFormaPagamento() == null) {
+		if((compra.getFormaPagamento() == null)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if((compra.getFormaEntrega() == null)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Compra>(compra,HttpStatus.OK);
@@ -68,5 +73,9 @@ public class CompraApiController {
 	@RequestMapping(value = "/pagamento", method = RequestMethod.GET)
 	public ResponseEntity<?> consultarFormasPagamento(){
 		return new ResponseEntity<FormaPagamento[]>(FormaPagamento.values(),HttpStatus.OK);
+	}
+	
+	private boolean detalhesCompraInvalidos(Compra compra) {
+		return (compra == null) || (compra.getFormaPagamento() == null) || (compra.getFormaEntrega() == null);
 	}
 }
