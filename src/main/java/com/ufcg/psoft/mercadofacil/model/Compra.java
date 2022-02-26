@@ -139,7 +139,7 @@ public class Compra {
 	
 	public void definirFormaEntrega(String formaEntrega, String tipoProdutos, double valorCompra) {
 		if(formaEntrega.equals("RETIRADA")) {
-			this.formaEntrega = new EntregaRetirada(valorCompra);
+			this.formaEntrega = new EntregaRetirada(tipoProdutos,valorCompra);
 			this.formaEntrega.setTipoEntrega(formaEntrega);
 		} else if (formaEntrega.equals("PADRAO")) {
 			this.formaEntrega = new EntregaPadrao(tipoProdutos,valorCompra);

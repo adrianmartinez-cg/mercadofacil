@@ -21,13 +21,13 @@ public class EstrategiaCalculoConverter implements  AttributeConverter<Estrategi
 	@Override
 	public EstrategiaCalculo convertToEntityAttribute(String dbData) {
 		if(dbData.equals("RETIRADA")) {
-			return new EstrategiaCalculoRetirada(0);
+			return new EstrategiaCalculoRetirada(0,"");
 		} else if (dbData.equals("COMUM")) {
-			return new EstrategiaCalculoComum(0);
+			return new EstrategiaCalculoComum(0,"");
 		} else if (dbData.equals("FRAGIL")) {
-			return new EstrategiaCalculoFragil(0);
+			return new EstrategiaCalculoFragil(0,"");
 		} else if (dbData.equals("REFRIGERACAO")) {
-			return new EstrategiaCalculoRefrigeracao(0);
+			return new EstrategiaCalculoRefrigeracao(0,"");
 		}
 		return null;
 	}

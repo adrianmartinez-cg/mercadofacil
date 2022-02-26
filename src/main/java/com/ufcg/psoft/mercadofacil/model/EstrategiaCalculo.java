@@ -8,6 +8,16 @@ public abstract class EstrategiaCalculo {
 	
 	protected double fatorTipoProdutos;
 	
+	protected String tipoProdutos;
+	
+	public String getTipoProdutos() {
+		return tipoProdutos;
+	}
+
+	public void setTipoProdutos(String tipoProdutos) {
+		this.tipoProdutos = tipoProdutos;
+	}
+
 	public abstract void calculaValorEntrega();
 	
 	public abstract String toString();
