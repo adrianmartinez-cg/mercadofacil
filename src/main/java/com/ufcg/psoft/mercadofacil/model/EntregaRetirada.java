@@ -10,7 +10,7 @@ public class EntregaRetirada extends Entrega {
 	
 	public EntregaRetirada(String tipoProdutos, double valorCompra) {
 		this.fatorFormaEntrega = 1;
-		this.estrategiaCalculo = new EstrategiaCalculoRetirada(valorCompra,tipoProdutos);
+		this.estrategiaCalculo = new EstrategiaCalculoRetirada(tipoProdutos, valorCompra);
 	}
 
 }

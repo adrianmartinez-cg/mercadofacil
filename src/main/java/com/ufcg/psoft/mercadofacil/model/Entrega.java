@@ -44,11 +44,11 @@ public abstract class Entrega {
 	
 	protected EstrategiaCalculo determinarEstrategia(String tipoProdutos, double valorCompra) {
 		if(tipoProdutos.equals("COMUM")) {
-			return new EstrategiaCalculoComum(valorCompra,tipoProdutos);	
+			return new EstrategiaCalculoComum(tipoProdutos,valorCompra);	
 		} else if (tipoProdutos.equals("FRAGIL")) {
-			return new EstrategiaCalculoFragil(valorCompra,tipoProdutos);
+			return new EstrategiaCalculoFragil(tipoProdutos,valorCompra);
 		} else if (tipoProdutos.equals("REFRIGERACAO")) {
-			return new EstrategiaCalculoRefrigeracao(valorCompra,tipoProdutos);
+			return new EstrategiaCalculoRefrigeracao(tipoProdutos,valorCompra);
 		} 
 		return null;
 	}

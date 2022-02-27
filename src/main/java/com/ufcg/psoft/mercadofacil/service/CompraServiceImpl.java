@@ -9,6 +9,7 @@ import com.ufcg.psoft.mercadofacil.model.Carrinho;
 import com.ufcg.psoft.mercadofacil.model.Cliente;
 import com.ufcg.psoft.mercadofacil.model.Compra;
 import com.ufcg.psoft.mercadofacil.model.FormaPagamento;
+import com.ufcg.psoft.mercadofacil.model.PerfilCliente;
 import com.ufcg.psoft.mercadofacil.repository.CompraRepository;
 
 @Service
@@ -27,13 +28,15 @@ public class CompraServiceImpl implements CompraService{
 	
 	public Compra fecharCompra(Cliente cliente, String formaPagamento, String formaEntrega) {
 		if(cliente.temAlgumProduto()) {
-			Compra compra = new Compra(cliente.getCarrinho(), 
-					                   cliente.getValorCarrinho());
+			PerfilCliente perfil = cliente.getPerfilCliente();
+			Carrinho carrinho = cliente.getCarrinho();
+			double valorCarrinho = cliente.getValorCarrinho();
+			Compra compra = new Compra(carrinho, valorCarrinho);
 			compra.definirFormaPagamento(formaPagamento);
 			if(detalhesCompraValidos(compra,formaEntrega)) {
 				compra.calcularValorComAcrescimo();
-				compra.calcularValorComDesconto(cliente.getPerfilCliente());
-				compra.definirFormaEntrega(formaEntrega,getTipoProdutos(cliente.getCarrinho()),compra.getValorComDesconto());
+				compra.calcularValorComDesconto(perfil);
+				compra.definirFormaEntrega(formaEntrega,carrinho.getTipoProdutos(),compra.getValorComDesconto());
 				compra.definirTotalAPagar();
 				salvarCompra(compra);
 				cliente.adicionarCompra(compra);
@@ -49,11 +52,7 @@ public class CompraServiceImpl implements CompraService{
 	public Optional<Compra> getCompra(Long idCompra) {
 		return compraRepository.findById(idCompra);
 	}
-	
-	private String getTipoProdutos(Carrinho carrinho) {
-		return carrinho.getTipoProdutos();
-	}
-	
+
 	private boolean formaEntregaValida(String formaEntrega) {
 		return formaEntrega.equals("RETIRADA") || formaEntrega.equals("PADRAO") || formaEntrega.equals("EXPRESS");
 	}

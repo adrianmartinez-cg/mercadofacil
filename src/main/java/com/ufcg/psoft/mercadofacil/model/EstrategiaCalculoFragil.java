@@ -2,15 +2,10 @@ package com.ufcg.psoft.mercadofacil.model;
 
 public class EstrategiaCalculoFragil extends EstrategiaCalculo {
 	
-	public EstrategiaCalculoFragil(double valorCompra, String tipoProdutos) {
+	public EstrategiaCalculoFragil(String tipoProdutos, double valorCompra) {
 		this.tipoProdutos = tipoProdutos;
-		this.fatorTipoProdutos = 1.15;
+		this.fatorTransporteProdutos = 1.15;
 		this.valorCompra = valorCompra;
-	}
-
-	@Override
-	public void calculaValorEntrega() {
-		this.totalAPagar = valorCompra*fatorTipoProdutos;
 	}
 
 	@Override

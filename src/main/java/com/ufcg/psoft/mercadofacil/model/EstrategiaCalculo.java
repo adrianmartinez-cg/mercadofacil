@@ -6,7 +6,7 @@ public abstract class EstrategiaCalculo {
 	
 	protected double totalAPagar;
 	
-	protected double fatorTipoProdutos;
+	protected double fatorTransporteProdutos;
 	
 	protected String tipoProdutos;
 	
@@ -17,21 +17,17 @@ public abstract class EstrategiaCalculo {
 	public void setTipoProdutos(String tipoProdutos) {
 		this.tipoProdutos = tipoProdutos;
 	}
-
-	public abstract void calculaValorEntrega();
-	
-	public abstract String toString();
 	
 	public double getValorCompra() {
 		return this.valorCompra;
 	}
 	
 	public double getFatorTipoProdutos() {
-		return this.fatorTipoProdutos;
+		return this.fatorTransporteProdutos;
 	}
 
-	public void definirTotalAPagar(double fatorEntrega) {
-		this.totalAPagar = this.valorCompra*fatorEntrega*fatorTipoProdutos;
+	public void definirTotalAPagar(double fatorFormaEntrega) {
+		this.totalAPagar = this.valorCompra*fatorFormaEntrega*fatorTransporteProdutos;
 	}
 	
 	public double getTotalAPagar() {
