@@ -46,10 +46,10 @@ public class CompraApiController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if((compra.getFormaPagamento() == null)) {
-			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if((compra.getFormaEntrega() == null)) {
-			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Compra>(compra,HttpStatus.OK);
 	}
