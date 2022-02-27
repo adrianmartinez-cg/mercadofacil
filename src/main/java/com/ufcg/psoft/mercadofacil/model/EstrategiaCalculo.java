@@ -22,7 +22,7 @@ public abstract class EstrategiaCalculo {
 		return this.valorCompra;
 	}
 	
-	public double getFatorTipoProdutos() {
+	public double getFatorTransporteProdutos() {
 		return this.fatorTransporteProdutos;
 	}
 

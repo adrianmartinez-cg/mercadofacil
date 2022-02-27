@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.ufcg.psoft.mercadofacil.model.Carrinho;
 import com.ufcg.psoft.mercadofacil.model.Cliente;
 import com.ufcg.psoft.mercadofacil.model.Compra;
-import com.ufcg.psoft.mercadofacil.model.FormaPagamento;
 import com.ufcg.psoft.mercadofacil.model.PerfilCliente;
 import com.ufcg.psoft.mercadofacil.repository.CompraRepository;
 

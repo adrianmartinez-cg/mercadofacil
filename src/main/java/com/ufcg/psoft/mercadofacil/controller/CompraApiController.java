@@ -41,14 +41,15 @@ public class CompraApiController {
 		}
 		Cliente cliente = clienteOp.get();
 		Compra compra = compraService.fecharCompra(cliente, detalhesCompra.getFormaPagamento(), detalhesCompra.getFormaEntrega());
+		
 		if(compra == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		if((compra.getFormaPagamento() == null)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		}
 		if((compra.getFormaEntrega() == null)) {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(HttpStatus.FORBIDDEN);
 		}
 		return new ResponseEntity<Compra>(compra,HttpStatus.OK);
 	}
@@ -74,8 +75,5 @@ public class CompraApiController {
 	public ResponseEntity<?> consultarFormasPagamento(){
 		return new ResponseEntity<FormaPagamento[]>(FormaPagamento.values(),HttpStatus.OK);
 	}
-	
-	private boolean detalhesCompraInvalidos(Compra compra) {
-		return (compra == null) || (compra.getFormaPagamento() == null) || (compra.getFormaEntrega() == null);
-	}
+
 }
