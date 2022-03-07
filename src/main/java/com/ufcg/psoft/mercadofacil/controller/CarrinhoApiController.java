@@ -53,18 +53,23 @@ public class CarrinhoApiController {
 		if (!produtoOp.isPresent()) {
 			return ErroProduto.erroProdutoNaoEncontrado(idProduto);
 		}
-		if (!produtoOp.get().isDisponivel()) {
+		Cliente cliente = clienteOp.get();
+		Produto produto = produtoOp.get();
+		
+		if (!produto.isDisponivel()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		
-		Lote lote = carrinhoService.adicionarProduto(clienteOp.get(), produtoOp.get(),quantidade);
-		if(lote.getNumeroDeItens() >= 0) { // produtos adicionados ao carrinho com sucesso
+		Lote lote = carrinhoService.adicionarProduto(cliente, produto ,quantidade);
+		if(lote.temNumeroDeItensValido()) { 			
 			loteService.salvarLote(lote);
-			return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.OK);
-		} // nao foi possivel adicionar produtos ( mais produtos do que tinha no lote)
-		lote.setNumeroDeItens(lote.getNumeroDeItens() + quantidade);
-		loteService.salvarLote(lote);
-		return new ResponseEntity<Lote>(lote,HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Carrinho>(cliente.getCarrinho(),HttpStatus.OK);
+		} else {
+			// tentou adicionar mais produtos do que havia no lote (numItens ficou < 0)
+			lote.setNumeroDeItens(lote.getNumeroDeItens() + quantidade);
+			loteService.salvarLote(lote);
+			return new ResponseEntity<Lote>(lote,HttpStatus.BAD_REQUEST);
+		}
 	}
 	
 	@RequestMapping(value = "/cliente/{idCliente}/carrinho/remove", method = RequestMethod.PUT)
@@ -80,13 +85,16 @@ public class CarrinhoApiController {
 		if (!produtoOp.isPresent()) {
 			return ErroProduto.erroProdutoNaoEncontrado(idProduto);
 		}
-		if(!clienteOp.get().getCarrinho().temProduto(idProduto)) {
-			return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.BAD_REQUEST);
+		Cliente cliente = clienteOp.get();
+		Produto produto = produtoOp.get();
+		
+		if(!cliente.temProdutoNoCarrinho(idProduto)) {
+			return new ResponseEntity<Carrinho>(cliente.getCarrinho(),HttpStatus.BAD_REQUEST);
 		}
 		
-		Lote lote = carrinhoService.removerProduto(clienteOp.get(), produtoOp.get(),quantidade);
+		Lote lote = carrinhoService.removerProduto(cliente, produto,quantidade);
 		loteService.salvarLote(lote);
-		return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.OK);
+		return new ResponseEntity<Carrinho>(cliente.getCarrinho(),HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "/cliente/{idCliente}/carrinho/", method = RequestMethod.GET)
@@ -95,7 +103,8 @@ public class CarrinhoApiController {
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(idCliente);
 		}
-		return new ResponseEntity<Carrinho>(clienteOp.get().getCarrinho(),HttpStatus.OK);
+		Cliente cliente = clienteOp.get();
+		return new ResponseEntity<Carrinho>(cliente.getCarrinho(),HttpStatus.OK);
 	}
 	
 }

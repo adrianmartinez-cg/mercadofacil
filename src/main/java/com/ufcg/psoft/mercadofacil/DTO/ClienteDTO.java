@@ -9,7 +9,9 @@ public class ClienteDTO {
 	private Integer idade;
 
 	private String endereco;
-
+	
+	private String perfil;
+	
 	public String getNome() {
 		return nome;
 	}
@@ -24,5 +26,9 @@ public class ClienteDTO {
 
 	public String getEndereco() {
 		return endereco;
+	}
+	
+	public String getPerfil() {
+		return perfil;
 	}
 }

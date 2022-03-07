@@ -28,6 +28,8 @@ public class Cliente {
 
 	private String endereco;
 	
+	private PerfilCliente perfil;
+	
 	@OneToOne(cascade = CascadeType.PERSIST)
 	private Carrinho carrinho;
 	
@@ -36,13 +38,14 @@ public class Cliente {
 
 	private Cliente() {}
 
-	public Cliente(Long cpf, String nome, Integer idade, String endereco) {
+	public Cliente(Long cpf, String nome, Integer idade, String endereco, String perfil) {
 		this.CPF = cpf;
 		this.nome = nome;
 		this.idade = idade;
 		this.endereco = endereco;
 		this.carrinho = new Carrinho();
 		this.historicoCompras = new ArrayList<Compra>();
+		setPerfilCliente(perfil);
 	}
 
 	public Long getId() {
@@ -101,5 +104,33 @@ public class Cliente {
 			}
 		}
 		return false;
+	}
+	
+	public PerfilCliente getPerfilCliente() {
+		return this.perfil;
+	}
+	
+	public void setPerfilCliente(String perfil) {
+		if(perfil.equals("NORMAL")) {
+			this.perfil = PerfilCliente.NORMAL;
+		} else if (perfil.equals("ESPECIAL")){
+			this.perfil = PerfilCliente.ESPECIAL;
+		} else if (perfil.equals("PREMIUM")) {
+			this.perfil = PerfilCliente.PREMIUM;
+		} else {
+			this.perfil = PerfilCliente.NORMAL;
+		}
+	}
+	
+	public boolean temProdutoNoCarrinho(Long idProduto) {
+		return this.carrinho.temProduto(idProduto);
+	}
+	
+	public boolean temAlgumProduto() {
+		return this.carrinho.temAlgumProduto();
+	}
+	
+	public double getValorCarrinho() {
+		return this.carrinho.getValor();
 	}
 }

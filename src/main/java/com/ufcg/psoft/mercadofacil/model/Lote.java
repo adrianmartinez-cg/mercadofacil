@@ -43,6 +43,10 @@ public class Lote {
     public void setNumeroDeItens(int numeroDeItens) {
         this.numeroDeItens = numeroDeItens;
     }
+    
+    public boolean temNumeroDeItensValido() {
+    	return this.numeroDeItens >= 0;
+    }
 
     @Override
     public String toString() {

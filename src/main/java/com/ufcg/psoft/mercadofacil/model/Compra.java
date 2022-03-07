@@ -22,7 +22,18 @@ public class Compra {
 	private LocalDate data;
 	
 	private double valor;
-
+	
+	private double valorComAcrescimo;
+	
+	private double valorComDesconto;
+	
+	private double totalAPagar;
+	
+	private FormaPagamento formaPagamento;
+	
+	@OneToOne(cascade = CascadeType.PERSIST)
+	private Entrega formaEntrega;
+	
 	public Compra() {}
 	public Compra(Carrinho carrinho, double valor) {
 		this.carrinho = carrinho;
@@ -57,4 +68,93 @@ public class Compra {
 		this.valor = valor;
 	}
 	
+	public double getValorComAcrescimo() {
+		return this.valorComAcrescimo;
+	}
+	
+	public double getValorComDesconto() {
+		return this.valorComDesconto;
+	}
+	
+	public double getTotalAPagar() {
+		return totalAPagar;
+	}
+	public void setTotalAPagar(double totalAPagar) {
+		this.totalAPagar = totalAPagar;
+	}
+	public void setValorComAcrescimo(double valorComAcrescimo) {
+		this.valorComAcrescimo = valorComAcrescimo;
+	}
+	
+	public void calcularValorComAcrescimo() {
+		double valorAcrescimoPaypal = 1.02;
+		double valorAcrescimoCartao = 1.05;
+		if(this.formaPagamento.equals(FormaPagamento.BOLETO)) {
+			setValorComAcrescimo(this.valor);
+		} else if (this.formaPagamento.equals(FormaPagamento.PAYPAL)) {
+			setValorComAcrescimo(this.valor*valorAcrescimoPaypal);
+		} else if (this.formaPagamento.equals(FormaPagamento.CARTAO_DE_CREDITO)) {
+			setValorComAcrescimo(this.valor*valorAcrescimoCartao);
+		}
+	}
+	
+	public FormaPagamento getFormaPagamento() {
+		return formaPagamento;
+	}
+	public void setFormaPagamento(FormaPagamento formaPagamento) {
+		this.formaPagamento = formaPagamento;
+	}
+	
+	public void setFormaEntrega(Entrega formaEntrega) {
+		this.formaEntrega = formaEntrega;
+	}
+	
+	public void definirFormaPagamento(String formaPagamento) {
+		if(formaPagamento.equals("BOLETO")) {
+			setFormaPagamento(FormaPagamento.BOLETO);
+		} else if (formaPagamento.equals("PAYPAL")) {
+			setFormaPagamento(FormaPagamento.PAYPAL);
+		} else if (formaPagamento.equals("CARTAO_DE_CREDITO")) {
+			setFormaPagamento(FormaPagamento.CARTAO_DE_CREDITO);
+		}
+	}
+	
+	public void calcularValorComDesconto(PerfilCliente perfilCliente) {
+		if(condicaoDeDescontoPerfilEspecial(perfilCliente)) {
+			this.valorComDesconto = this.valorComAcrescimo * 0.90;
+		} else if (condicaoDeDescontoPerfilPremium(perfilCliente)) {
+			this.valorComDesconto = this.valorComAcrescimo * 0.90;
+		} else {
+			this.valorComDesconto = this.valorComAcrescimo;
+		}
+	}
+	
+	private boolean condicaoDeDescontoPerfilEspecial(PerfilCliente perfilCliente) {
+		return perfilCliente.equals(PerfilCliente.ESPECIAL) && this.carrinho.getQuantidadeProdutos() > 10;
+	}
+	
+	private boolean condicaoDeDescontoPerfilPremium(PerfilCliente perfilCliente) {
+		return perfilCliente.equals(PerfilCliente.PREMIUM) && this.carrinho.getQuantidadeProdutos() > 5;
+	}
+	
+	public void definirFormaEntrega(String formaEntrega, String tipoProdutos, double valorCompra) {
+		if(formaEntrega.equals("RETIRADA")) {
+			this.formaEntrega = new EntregaRetirada(tipoProdutos,valorCompra);
+			this.formaEntrega.setTipoEntrega(formaEntrega);
+		} else if (formaEntrega.equals("PADRAO")) {
+			this.formaEntrega = new EntregaPadrao(tipoProdutos,valorCompra);
+			this.formaEntrega.setTipoEntrega(formaEntrega);
+		} else if (formaEntrega.equals("EXPRESS")) {
+			this.formaEntrega = new EntregaExpress(tipoProdutos,valorCompra);
+			this.formaEntrega.setTipoEntrega(formaEntrega);
+		}
+	}
+	
+	public void definirTotalAPagar() {
+		this.totalAPagar = this.formaEntrega.calculaValorEntrega();
+	}
+		
+	public Entrega getFormaEntrega() {
+		return this.formaEntrega;
+	}
 }
