@@ -7,12 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ufcg.psoft.mercadofacil.DTO.FinalizarCompraDTO;
 import com.ufcg.psoft.mercadofacil.model.Cliente;
 import com.ufcg.psoft.mercadofacil.model.Compra;
+import com.ufcg.psoft.mercadofacil.model.FormaPagamento;
 import com.ufcg.psoft.mercadofacil.service.ClienteService;
 import com.ufcg.psoft.mercadofacil.service.CompraService;
 import com.ufcg.psoft.mercadofacil.util.ErroCliente;
@@ -30,13 +33,22 @@ public class CompraApiController {
 	private ClienteService clienteService;
 	
 	@RequestMapping(value = "/cliente/{idCliente}/compra", method = RequestMethod.POST)
-	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente){
+	public ResponseEntity<?>  finalizarCompra(@PathVariable("idCliente") long idCliente, @RequestBody FinalizarCompraDTO detalhesCompra){
+		
 		Optional<Cliente> clienteOp = clienteService.getClienteById(idCliente);
 		if (!clienteOp.isPresent()) {
 			return ErroCliente.erroClienteNaoEncontrado(idCliente);
 		}
-		Compra compra = compraService.fecharCompra(clienteOp.get());
+		Cliente cliente = clienteOp.get();
+		Compra compra = compraService.fecharCompra(cliente, detalhesCompra.getFormaPagamento(), detalhesCompra.getFormaEntrega());
+		
 		if(compra == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if((compra.getFormaPagamento() == null)) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		if((compra.getFormaEntrega() == null)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Compra>(compra,HttpStatus.OK);
@@ -52,10 +64,16 @@ public class CompraApiController {
 		if(!compra.isPresent()) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		if(!clienteService.clienteTemCompra(clienteOp.get(), idCompra)) {
+		Cliente cliente = clienteOp.get();
+		if(!clienteService.clienteTemCompra(cliente, idCompra)) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<Compra>(compra.get(),HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/pagamento", method = RequestMethod.GET)
+	public ResponseEntity<?> consultarFormasPagamento(){
+		return new ResponseEntity<FormaPagamento[]>(FormaPagamento.values(),HttpStatus.OK);
 	}
 
 }
